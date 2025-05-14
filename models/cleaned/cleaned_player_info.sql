@@ -3,43 +3,28 @@ WITH src_player_info AS (
     *
   FROM
   {{ ref('src_player_info') }}
-), ranked AS (
-  -- deduplication logic is to keep only latest game data for duplicate game_id
+), labeled AS (
+  -- deduplication logic is to keep only earliest birth data for duplicate player_id
   SELECT
     *,  
-    ROW_NUMBER() OVER (PARTITION BY player_id ORDER BY birth_date DESC) AS row_num
+    ROW_NUMBER() OVER (PARTITION BY player_id ORDER BY birth_date ASC) AS row_num
   FROM src_player_info
 ), deduplicated AS (
   SELECT 
     *
-  FROM ranked
+  FROM labeled
   WHERE row_num = 1
 )
 SELECT
   player_id::INT as player_id,
-  CASE
-    WHEN NOT REGEXP_LIKE(first_name, '^[[:alpha:]]+$') THEN
-      CASE
-        WHEN LENGTH(first_name) <= 4 THEN REPLACE(first_name, '-', '.')
-        ELSE first_name
-      END 
-    ELSE first_name
-  END AS first_name,
-  CASE
-    WHEN REGEXP_LIKE(TRIM(last_name), '.+\\s.+') THEN
-      INITCAP(REGEXP_REPLACE(TRIM(last_name), '\\s+', ' '))
-    ELSE INITCAP(last_name)
-  END AS last_name,
+  first_name,
+  last_name,
   CASE
     WHEN nationality = 'NA' THEN NULL
-    ELSE nationality::CHAR(3)
+    ELSE nationality
   END AS nationality,
-  CASE
-    WHEN REGEXP_LIKE(TRIM(birth_city), '.+\\s.+') THEN
-      INITCAP(REGEXP_REPLACE(TRIM(birth_city), '\\s+', ' '))
-    ELSE INITCAP(birth_city)
-  END AS birth_city,
-  primary_position::CHAR(2) AS primary_position,
+  birth_city,
+  primary_position,
   birth_date,
   CASE
     WHEN birth_state_province = 'NA' THEN NULL
@@ -61,7 +46,7 @@ SELECT
   END AS weight_pounds,
   CASE
     WHEN weight_pounds = 'NA' THEN NULL
-    ELSE (weight_pounds::INT * 0.453592)::NUMERIC(38, 1)
+    ELSE ROUND((weight_pounds::INT * 0.453592), 1)
   END AS weight_kilograms,
   CASE
     WHEN shoots_or_catches_side = 'NA' THEN NULL

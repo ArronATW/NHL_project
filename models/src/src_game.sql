@@ -1,5 +1,5 @@
 WITH raw_game AS (
-    SELECT * FROM {{ source('nhl', 'raw_game')}}
+    SELECT * FROM {{ source('nhl', 'raw_game') }}
 )
 SELECT
     game_id,

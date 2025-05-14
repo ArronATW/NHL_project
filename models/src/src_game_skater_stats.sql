@@ -1,5 +1,5 @@
 WITH raw_game_skater_stats AS (
-    SELECT * FROM {{ source('nhl', 'raw_game_skater_stats')}}
+    SELECT * FROM {{ source('nhl', 'raw_game_skater_stats') }}
 )
 SELECT
     game_id,

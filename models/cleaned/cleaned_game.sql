@@ -3,7 +3,7 @@ WITH src_game AS (
     *
   FROM
   {{ ref('src_game') }}
-), ranked AS (
+), labeled AS (
   -- deduplication logic is to keep only latest game data for duplicate game_id
   SELECT
     *,
@@ -12,7 +12,7 @@ WITH src_game AS (
 ), deduplicated AS (
   SELECT 
     *
-  FROM ranked
+  FROM labeled
   WHERE row_num = 1
 )
 SELECT

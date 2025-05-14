@@ -3,7 +3,7 @@ WITH cleaned_player_info AS (
 )
 SELECT
   player_id,
-  INITCAP(first_name) || ' ' || last_name AS full_name,
+  INITCAP(first_name) || ' ' || INITCAP(last_name) AS full_name,
   c.country AS country_of_origin,
   birth_city,
   s.state AS country_state,

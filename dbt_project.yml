@@ -32,6 +32,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   nhl_project:
     # Config indicated by + and applies to all files under models/example/
+    seed:
+      +schema: raw
     src:
       +schema: cleaned
       +materialized: ephemeral

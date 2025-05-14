@@ -3,7 +3,7 @@ WITH src_game_skater_stats AS (
     *
   FROM
   {{ ref('src_game_skater_stats') }}
-), ranked AS (
+), labeled AS (
   SELECT
     *,
     ROW_NUMBER() OVER (PARTITION BY game_id, player_id, team_id ORDER BY game_id) AS row_num
@@ -11,7 +11,7 @@ WITH src_game_skater_stats AS (
 ), deduplicated AS (
   SELECT 
     *
-  FROM ranked
+  FROM labeled
   WHERE row_num = 1
 ), cleaned as (
   SELECT 
