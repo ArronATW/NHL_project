@@ -1,0 +1,255 @@
+version: 2
+
+models:
+  - name: fct_player_game_stats
+    description: '{{ doc("fct_player_game_stats") }}'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - game_id
+            - player_id
+            - team_id
+            
+    columns:
+      - name: skater_game_fact_id
+        description: "Surrogate key for player-game performance facts"
+        tests:
+          - unique
+          - not_null
+      
+      - name: player_id
+        description: "Reference to player dimension"
+        tests:
+          - not_null
+          - relationships:
+              to: "{{ ref('dim_player') }}"
+              field: player_id
+
+      - name: team_id
+        description: "Reference to team dimension (game context)"
+        tests:
+          - not_null
+          - relationships:
+              to: "{{ ref('dim_team') }}"
+              field: team_id
+      
+      - name: game_id
+        description: "Reference to game dimension"
+        tests:
+          - not_null
+          - relationships:
+              to: "{{ ref('dim_game') }}"
+              field: game_id
+      
+      - name: goals
+        description: "Total goals scored (all situations)"
+      
+      - name: assists
+        description: "Total assists earned"
+
+      - name: shots_on_goal
+        description: "Shot attempts at goal"
+      
+      - name: time_on_ice
+        description: "Total time spent on ice in seconds"
+
+      - name: scoring_efficiency_percentage
+        description: "Goals per shot percentage (G/Shots)"
+      
+      - name: goals_per_minute
+        description: "Goal rate per 60 TOI (G/60)"
+
+      - name: assists_per_minute
+        description: "Assist rate per 60 TOI (A/60)"
+
+      - name: face_off_wins
+        description: "Faceoffs won (all zones)"
+      
+      - name: face_off_taken
+        description: "Total faceoff attempts"
+      
+      - name: face_off_win_percentage
+        description: "FO wins / FO taken"
+
+      - name: takeaways
+        description: "Puck steals from opponents"
+
+      - name: giveaways
+        description: "Puck losses to opponents"
+
+      - name: hits
+        description: "Number of intentionally initiated contact with the player
+         possessing the puck that causes that player to lose possession 
+         of the puck"
+
+      - name: blocked_shots
+        description: "Number of deflected wide or blocked by
+        the player does not count as a shot on goal"
+
+      - name: hits_per_minute
+        description: "calculated field taking hits / total time on ice"
+      
+      - name: power_play_goals
+        description: "Goals scored during power-play opportunities. A power \
+        play occurs when a team has a numerical advantage on the ice because 
+        an opposing player is serving a penalty."
+      
+      - name: power_play_assists
+        description: "Assists made during power-play opportunities. A power \
+        play occurs when a team has a numerical advantage on the ice because 
+        an opposing player is serving a penalty."
+
+      - name: power_play_time_on_ice
+        description: "Time played during power plays (e.g., 5v4)."
+
+      - name: short_handed_goals
+        description: "Goals scored while the team was shorthanded. short-handed 
+        refers to a situation where a team is playing with fewer players on the 
+        ice due to a penalty, typically a minor penalty."
+
+      - name: short_handed_assists
+        description: "Assists made while shorthanded. short-handed 
+        refers to a situation where a team is playing with fewer players on the 
+        ice due to a penalty, typically a minor penalty."
+
+      - name: short_handed_time_on_ice
+        description: "Time played during penalty kills (e.g., 4v5)."
+
+      - name: power_play_points_per_minute
+        description: "Calculated field taking power play goals & assists / power play time on ice"
+
+      - name: short_handed_points_per_minute
+        description: "Calculated field taking short handed goals & assists / short handed time on ice"
+      
+  
+  - name: dim_game
+    description: '{{ doc("dim_game") }}'
+    columns:
+      - name: game_id
+        description: ""
+        tests:
+          - unique
+          - not_null
+      
+      - name: season_start
+        description: "The starting year of the NHL season (e.g., 2019 for 2019-2020 season)"
+
+      - name: season_end
+        description: "The ending year of the NHL season (e.g., 2020 for 2019-2020 season)"
+
+      - name: game_type
+        description: "Type of game, value are mapped are following 
+          R: Regular season, P: Playoffs, A: All-Star"
+      
+      - name: game_year
+        description: "Extracted year field from game_datetime_utc"
+
+      - name: game_month
+        description: "Extracted month field from game_datetime_utc"
+
+      - name: game_day
+        description: "Extracted day field from game_datetime_utc"
+
+      - name: day_of_week
+        description: "Extracted day of the week field from game_datetime_utc."
+
+      - name: away_team_id
+        description: "Team ID of the away team"
+      
+      - name: home_team_id
+        description: "Team ID of the home team"
+
+      - name: away_team_goals
+        description: "Total goals scored by the away team"
+
+      - name: home_team_goals
+        description: "Total goals scored by the home team"
+
+      - name: winning_team
+        description: "Indicates which team won - 'home', 'away', or NULL for missing data."
+      
+      - name: win_type
+        description: "Type of win - Regular (REG), Overtime (OT), or NULL missing data.
+        Values are mapped are following REG: Regular Time, OT: OverTime."
+      
+      - name: home_rink_side_start
+        description: "Which side of the rink the home team started on (LEFT/RIGHT)"
+      
+      - name: venue
+        description: "Name of the arena/venue where the game was played"
+      
+      - name: venue_time_zone_id
+        description: "Time zone ID of the venue (e.g., 'America/New_York')"
+
+      - name: venue_time_zone_offset
+        description: "UTC offset in hours for the venue's time zone"
+
+      - name: venue_time_zone_label
+        description: "Display name of the venue's time zone (e.g., 'Eastern Daylight Time')"
+
+  
+  - name: dim_player
+    description: '{{ doc("dim_player") }}'
+    columns:
+      - name: player_id
+        description: "Unique identifier for each NHL player."
+        tests:
+          - unique
+          - not_null
+
+      - name: full_name
+        description: "Concatenated full name of the player in 'First Last' 
+        format, with proper capitalization."
+
+      - name: country_of_origin
+        description: "Full country name derived 
+        from the player's nationality code (e.g., Canada, United States)."
+      
+      - name: birth_city
+        description: "City where the player was born."
+
+      - name: country_state
+        description: "State or province of birth, mapped from state or 
+        province abbreviation where applicable."
+      
+      - name: birth_date
+        description: "Player's date of birth in YYYY-MM-DD format."
+      
+      - name: primary_position
+        description: "Player's main on-ice position translated 
+        from standard position codes (e.g., Center, Defenseman, Goalie)."
+      
+      - name: height_feet
+        description: "Player's height in feet component (e.g., 6 in 6'2\")"
+      
+      - name: height_inches
+        description: "Player's height in inches component (e.g., 2 in 6'2\")"
+      
+      - name: weight_pounds
+        description: "Player's weight in pounds (lbs)"
+
+      - name: handedness
+        description: "Player's handedness - shooting side for skaters (L/R)"
+
+      
+  - name: dim_team
+    description: '{{ doc("dim_team") }}'
+    columns:
+      - name: team_id
+        description: "Unique identifier for each team in a given season 
+        (accounts for relocations/rebrands)"
+        tests:
+          - unique
+          - not_null
+      
+      - name: franchise_id
+        description: "Identifier for the franchise group
+          that owns the team (consistent across relocations/rebrands)"
+      
+      - name: team_name
+        description: "Concatenated full name of the team in 'Location Nickname' 
+        format."
+      
+      - name: team_abbreviation
+        description: "Official 3-letter NHL abbreviation for the team (e.g., 'NYR', 'COL')"
+

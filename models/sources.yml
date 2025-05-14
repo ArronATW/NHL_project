@@ -1,0 +1,43 @@
+version: 2
+
+sources:
+  - name: nhl
+    description: "Raw NHL data from Kaggle covering 2000–2020"
+    schema: stage_sch
+    tables:
+      - name: raw_game
+        description: "game.csv from kaggle. Contains record of each game in the dataset"
+        identifier: game
+
+      - name: raw_game_skater_stats
+        description: "game_skater_stats.csv from kaggle. The basic stats for 
+        each skater that played in each game."
+        identifier: game_skater_stats
+
+      - name: raw_player_info
+        description: "player_info.csv from kaggle. Static information on 
+        players such as names."
+        identifier: player_info
+
+      - name: raw_team_info
+        description: "team_info.csv from kaggle. Static information on teams 
+        such as names."
+        identifier: team_info
+
+models:
+  - name: src_game_skater_stats
+    description: "Ephemeral model. Cleaned NHL skater stats 
+    per game (2000–2020) for downstream transformations into player game stats fact table."
+        
+  - name: src_game
+    description: "Ephemeral model. Cleaned game stats for downstream transformations
+     into game dimension table"
+  
+  - name: src_player_info
+    description: "Ephemeral model. Cleaned player information stats for downstream transformations
+     into player dimension table"
+
+  - name: src_team_info
+    description: "Ephemeral model. Cleaned team information stats for downstream transformations
+     into team dimension table"
+  

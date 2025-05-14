@@ -1,0 +1,146 @@
+version: 2
+
+models:
+  - name: agg_player_season_stats
+    description: '{{ doc("agg_player_season_stats") }}'
+    columns:
+      - name: player_id
+        description: "Unique identifier for each NHL player."
+
+      - name: season_start
+        description: "Start year of the NHL season (e.g., 2018 for the 2018–2019 season)."
+      
+      - name: season_end
+        description: "End year of the NHL season (e.g., 2019 for the 2018–2019 season)."
+
+      - name: games_played
+        description: "Total number of games the player participated in during the season."
+      
+      - name: total_goals
+        description: "Total number of goals scored by the player during the season."
+      
+      - name: total_assists
+        description: "Total number of assists made by the player during the season."
+      
+      - name: total_points
+        description: "Sum of goals and assists; represents the player's total points in the season."
+      
+      - name: total_shots
+        description: "Total number of shots on goal made by the player in the season."
+      
+      - name: avg_scoring_efficiency_pct
+        description: "Average scoring efficiency percentage (goals divided by shots on goal) across all games in the season, rounded to 2 decimal places."
+      
+      - name: total_faceoff_wins
+        description: "Total number of faceoffs won by the player."
+      
+      - name: total_faceoffs
+        description: "Total number of faceoffs taken by the player."
+      
+      - name: avg_face_off_win_percentage
+        description: "Average faceoff win percentage across games in the season, rounded to 2 decimal places."
+      
+      - name: total_minutes
+        description: "Total time on ice during the season, converted from seconds to minutes and rounded."
+
+      - name: hits_per_60minute
+        description: "Hits made per 60 minutes of ice time, calculated using total hits and total minutes."
+
+      - name: blocked_shots_per_60minute
+        description: "Blocked shots per 60 minutes of ice time."
+
+      - name: goals_per_60minute
+        description: "Goals scored per 60 minutes of ice time."
+
+      - name: assists_per_60minute
+        description: "Assists made per 60 minutes of ice time."
+
+      - name: total_takeaways
+        description: "Total number of takeaways recorded by the player in the season."
+
+      - name: total_pp_points
+        description: "Total power play points (goals + assists) recorded during power play situations."
+
+      - name: total_pp_minutes
+        description: "Total time on ice during power plays, converted from seconds to minutes."
+
+      - name: avg_pp_points_per_60minute
+        description: "Average power play points scored per 60 minutes of power play ice time."
+
+      - name: total_sh_points
+        description: "Total short-handed points (goals + assists) recorded during short-handed situations."
+
+      - name: total_sh_minutes
+        description: "Total time on ice during short-handed situations, converted from seconds to minutes."
+
+      - name: avg_sh_points_per_60minute
+        description: "Average short-handed points scored per 60 minutes of short-handed ice time."
+  
+  - name: agg_player_career_stats
+    description: '{{ doc("agg_player_career_stats") }}'
+    columns:
+      - name: player_id
+        description: "Unique identifier for each NHL player."
+
+      - name: total_seasons
+        description: "Total number of distinct seasons the player has participated in."
+
+      - name: total_games
+        description: "Total number of games played by the player across all seasons."
+
+      - name: total_goals
+        description: "Total number of goals scored by the player over their career."
+
+      - name: total_assists
+        description: "Total number of assists made by the player across their career."
+
+      - name: total_points
+        description: "Total points accumulated by the player (goals + assists)."
+
+      - name: total_shots
+        description: "Total number of shots on goal taken by the player during their career."
+
+      - name: avg_scoring_efficiency_pct
+        description: "Average scoring efficiency percentage across all seasons, calculated as goals divided by shots on goal."
+
+      - name: total_faceoff_wins
+        description: "Total number of faceoffs won by the player across their career."
+
+      - name: total_faceoffs
+        description: "Total number of faceoffs the player has taken."
+
+      - name: avg_face_off_win_percentage
+        description: "Average faceoff win percentage across all seasons."
+
+      - name: total_minutes
+        description: "Total time on ice (in minutes) the player has spent across all games."
+
+      - name: hits_per_60minute
+        description: "Average number of hits delivered per 60 minutes of play across all seasons."
+
+      - name: blocked_shots_per_60minute
+        description: "Average number of blocked shots per 60 minutes of play over the player’s career."
+
+      - name: goals_per_60minute
+        description: "Average number of goals scored per 60 minutes of ice time across all seasons."
+
+      - name: assists_per_60minute
+        description: "Average number of assists made per 60 minutes of ice time across all seasons."
+
+      - name: total_takeaways
+        description: "Total number of takeaways recorded by the player in their career."
+
+      - name: total_pp_points
+        description: "Total number of power play points (goals + assists) recorded by the player."
+
+      - name: total_pp_minutes
+        description: "Total time on ice (in minutes) spent during power plays."
+
+      - name: avg_pp_points_per_60minute
+        description: "Average number of power play points per 60 minutes of power play time."
+
+      - name: avg_sh_points_per_60minute
+        description: "Average number of short-handed points (goals + assists) per 60 minutes of short-handed play."
+
+      
+

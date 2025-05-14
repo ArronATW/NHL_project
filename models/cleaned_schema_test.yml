@@ -1,0 +1,307 @@
+version: 2
+
+models:
+  - name: cleaned_game_skater_stats
+    description: '{{ doc("cleaned_game_skater_stats") }}'
+    columns:
+      - name: game_id
+        description: "Unique identifier for the NHL game."
+        tests:
+          - not_null
+
+      - name: player_id
+        description: "Unique identifier for the player."
+        tests:
+          - not_null
+
+      - name: team_id
+        description: "Unique identifier for the player's team in this game."
+        tests:
+          - not_null
+      
+      - name: time_on_ice
+        description: "Total time played (seconds) in the game."
+      
+      - name: assists
+        description: "Number of assists credited to the player."
+      
+      - name: goals
+        description: "Number of goals scored by the player."
+
+      - name: shots_on_goal
+        description: "Total shots directed on net."
+
+      - name: hits
+        description: "Number of physical hits delivered."
+
+      - name: power_play_goals
+        description: "Goals scored during power-play opportunities. A power \
+        play occurs when a team has a numerical advantage on the ice because 
+        an opposing player is serving a penalty."
+
+      - name: power_play_assists
+        description: "Assists made during power-play opportunities. A power \
+        play occurs when a team has a numerical advantage on the ice because 
+        an opposing player is serving a penalty."
+
+      - name: penalty_minutes
+        description: "Total penalty minutes. This is used to track the length 
+        of time a player spends in the penalty box for infractions"
+
+      - name: face_off_wins
+        description: "Number of faceoffs won by the player. Faceoffs are a 
+        crucial part of play, restarting the game after a stoppage, 
+        such as a goal, a penalty, or when play is stopped by the referee"
+
+      - name: face_off_taken
+        description: "Total faceoffs attempted by the player. Faceoffs are a 
+        crucial part of play, restarting the game after a stoppage, 
+        such as a goal, a penalty, or when play is stopped by the referee"
+
+      - name: takeaways
+        description: "Number of times the player stole the puck from opponents."
+
+      - name: giveaways
+        description: "Number of times the player lost possession to opponents."
+
+      - name: short_handed_goals
+        description: "Goals scored while the team was shorthanded. short-handed 
+        refers to a situation where a team is playing with fewer players on the 
+        ice due to a penalty, typically a minor penalty."
+
+      - name: short_handed_assists
+        description: "Assists made while shorthanded. short-handed 
+        refers to a situation where a team is playing with fewer players on the 
+        ice due to a penalty, typically a minor penalty."
+
+      - name: blocked_shots
+        description: "Shots blocked by the player."
+
+      - name: plus_minus_rating
+        description: "+/- rating measures a player's impact on their team's goal
+         differential during even-strength and shorthanded situations. 
+         A player receives a +1 for each even-strength or shorthanded goal 
+         their team scores while they're on the ice and a -1 for each such goal
+          the opposing team scores while they're on the ice. The difference 
+          between these two values is the player's plus-minus rating. "
+      
+      - name: even_time_on_ice
+        description: "Time played at even strength (5v5)."
+
+      - name: short_handed_time_on_ice
+        description: "Time played during penalty kills (e.g., 4v5)."
+
+      - name: power_play_time_on_ice
+        description: "Time played during power plays (e.g., 5v4)." 
+      
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - game_id
+            - player_id
+            - team_id
+      
+  - name: cleaned_game
+    description: '{{ doc("cleaned_game") }}'
+    columns:
+      - name: game_id
+        description: "Unique identifier for each NHL game"
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: "{{ ref('dim_game') }}"
+              field: game_id
+    
+      - name: season_start
+        description: "The starting year of the NHL season (e.g., 2019 for 2019-2020 season)"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 2000
+              max_value: 2020
+      
+      - name: season_end
+        description: "The ending year of the NHL season (e.g., 2020 for 2019-2020 season)"
+
+      - name: game_type
+        description: "Type of game - Regular season (R), Playoffs (P), or All-Star (A)"
+        tests:
+          - accepted_values:
+              values: ['A', 'P', 'R']
+
+      - name: game_datetime_utc
+        description: "Date and time when the game started (UTC timezone)"
+
+      - name: away_team_id
+        description: "Team ID of the away team"
+      
+      - name: home_team_id
+        description: "Team ID of the home team"
+
+      - name: away_team_goals
+        description: "Total goals scored by the away team"
+
+      - name: home_team_goals
+        description: "Total goals scored by the home team"
+
+      - name: winning_team
+        description: "Indicates which team won - 'home', 'away', or NULL for missing data"
+        tests:
+          - accepted_values:
+              values: ['home', 'away', null]
+
+      - name: win_type
+        description: "Type of win - Regular (REG), Overtime (OT), or NULL missing data"
+        tests:
+          - accepted_values:
+              values: ['REG', 'OT', null]
+
+      - name: home_rink_side_start
+        description: "Which side of the rink the home team started on (LEFT/RIGHT)"
+        tests:
+          - accepted_values:
+              values: ['LEFT', 'RIGHT', null]
+
+      - name: venue
+        description: "Name of the arena/venue where the game was played"
+      
+      - name: venue_api_link
+        description: "API reference link for the venue"
+
+      - name: venue_time_zone_id
+        description: "Time zone ID of the venue (e.g., 'America/New_York')"
+
+      - name: venue_time_zone_offset
+        description: "UTC offset in hours for the venue's time zone"
+
+      - name: venue_time_zone_label
+        description: "Display name of the venue's time zone (e.g., 'Eastern Daylight Time')"
+
+  - name: cleaned_player_info
+    # '{{ doc("cleaned_player_info") }}'
+    description: '{{ doc("cleaned_player_info") }}'
+    columns:
+      - name: player_id
+        description: "Unique identifier for each NHL player"
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: "{{ ref('dim_player') }}"
+              field: player_id
+      
+      - name: first_name
+        description: "Player's legal first name"
+
+      - name: last_name
+        description: "Player's legal last name"
+
+      - name: nationality
+        description: "Player's nationality represented as 2-letter 
+        country code (e.g., 'CA' for Canada)"
+
+      - name: birth_city
+        description: "City where the player was born"
+
+      - name: primary_position
+        description: "Player's primary position 
+        (Center, Defense, Goalie, Left Wing, or Right Wing)"
+        tests:
+          - accepted_values:
+              values: ['C', 'D', 'G', 'LW', 'RW']
+      
+      - name: birth_date
+        description: "Player's date of birth in YYYY-MM-DD format"
+
+      - name: birth_state_province
+        description: "State or province where the player was born (for US/Canada players)"
+
+      - name: height_feet
+        description: "Player's height in feet component (e.g., 6 in 6'2\")"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 4
+              max_value: 8
+              severity: warn
+
+      - name: height_inches
+        description: "Player's height in inches component (e.g., 2 in 6'2\")"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 11
+              severity: warn
+      
+      - name: weight_pounds
+        description: "Player's weight in pounds (lbs)"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 100
+              max_value: 400
+              severity: warn
+
+      - name: weight_kilograms
+        description: "Player's weight in kilograms (kg)"
+      
+      - name: shoots_or_catches_side
+        description: "Player's handedness - shooting side for skaters (L/R)
+        , catching side for goalies (L/R)"
+        tests:
+          - accepted_values:
+              values: ['L', 'R', null]
+    
+  - name: cleaned_team_info
+    description: '{{ doc("cleaned_team_info") }}'
+    columns:
+      - name: team_id
+        description: "Unique identifier for each team in a given season 
+        (accounts for relocations/rebrands)"
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: "{{ ref('dim_team') }}"
+              field: team_id
+      
+      - name: franchise_id
+        # Winnipeg Jets & Atlanta Thrashers owned by same group in history
+        # franchise_id cannot be unique 
+        description: "Identifier for the franchise group
+         that owns the team (consistent across relocations/rebrands)"
+        tests:
+          - not_null
+      
+      - name: team_location
+        description: "Geographic location/city name of the team (e.g., 'New York', 'Colorado')"
+        tests:
+          - unique
+          - not_null
+      
+      # Phoenix Coyotes & Arizona Coyotes (which became Utah Hockey Club)
+      # team_nickname cannot be unique 
+      - name: team_nickname
+        description: "Official team nickname/mascot name (e.g., 'Rangers', 'Avalanche')"
+        tests:
+          - not_null
+      
+      - name: team_abbreviation
+        description: "Official 3-letter NHL abbreviation for the team (e.g., 'NYR', 'COL')"
+        tests:
+          - unique
+          - not_null
+      
+      - name: team_api_link
+        description: "Official NHL API endpoint reference for the team's current profile"
+        tests:
+          - unique
+          - not_null
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - team_location
+            - team_nickname
+            - team_abbreviation
+          
+      
+          

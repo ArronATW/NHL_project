@@ -1,0 +1,18 @@
+version: 2
+
+seeds:
+  - name: country_mapping
+    description: "Seed table that maps 2-letter country codes (ISO Alpha-2) to full country names. Used to enrich player nationality information in the player dimension table."
+    columns:
+      - name: code
+        description: "2-letter ISO Alpha-2 country code (e.g., 'US', 'CA')."
+      - name: country
+        description: "Full country name corresponding to the country code (e.g., 'United States', 'Canada')."
+
+  - name: state_mapping
+    description: "Seed table that maps state or province abbreviations to their full names. This enriches the player's birthplace state/province information in the player dimension table."
+    columns:
+      - name: abbr
+        description: "Abbreviation for the state or province (e.g., 'NY', 'ON')."
+      - name: state
+        description: "Full name of the state or province (e.g., 'New York', 'Ontario')."
