@@ -27,6 +27,7 @@ SELECT
   -- lesser giveaways  indirectly means more chances to score via goals/assists
   giveaways,
   -- defensive stats
+  plus_minus_rating,
   hits,
   blocked_shots,
   ROUND((hits / ((CASE WHEN time_on_ice = 0 THEN 1 ELSE time_on_ice END) / 60.0)), 2) AS hits_per_minute,
