@@ -10,3 +10,4 @@ bokeh
 pillow
 opencv-python
 jupyter
+snowflake
