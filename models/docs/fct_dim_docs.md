@@ -40,10 +40,6 @@ Derived columns are calculated to enrich raw game statistics with per-minute rat
   Percentage of face-offs won, indicating puck control.  
   `= (face_off_wins / face_off_taken) * 100`
 
-#### Defensive Metrics
-- **`hits_per_minute`**:  
-  Number of hits delivered per minute on ice.  
-  `= hits / (time_on_ice)`
 
 #### Special Teams Performance
 - **`power_play_points_per_minute`**:  
@@ -90,7 +86,6 @@ The `dim_game` dimension model provides contextual and descriptive information a
 This dimension table is linked to fact models via the `game_id` field. Primary relationships include:
 
 - `fact_skater_game_stats`: Each row in the fact table references a `game_id` from this dimension.
-- Other possible fact tables such as `fact_goalie_game_stats` or `fact_team_game_stats` may also join on `game_id`.
 
 This enables analysts to drill down into game-specific details when analyzing player or team performance.
 
@@ -114,25 +109,6 @@ This enables analysts to drill down into game-specific details when analyzing pl
 - **`win_type`**:  
   Converts win types from short codes to readable formats:  
   `'REG' → Regular Time`, `'OT' → Overtime`.
-
----
-
-### Additional Contextual Columns
-
-- **`season_start`, `season_end`**:  
-  Indicates the season in which the game was played.
-
-- **`home_team_id`, `away_team_id`**:  
-  Useful for joining with `dim_team` or supporting game-level team matchups.
-
-- **`home_team_goals`, `away_team_goals`, `winning_team`**:  
-  Supports outcomes and performance comparisons.
-
-- **`home_rink_side_start`**:  
-  Describes the side the home team starts on — relevant for strategy analysis.
-
-- **`venue`, `venue_time_zone_id`, `venue_time_zone_offset`, `venue_time_zone_label`**:  
-  Venue-level detail, supports geographic and time-zone based insights (e.g., travel fatigue analysis or time-based performance).
 
 ---
 
@@ -161,7 +137,6 @@ The `dim_player` model serves as the central dimension table for player metadata
 This dimension is connected to fact tables through the `player_id` field. It is primarily referenced by:
 
 - `fact_skater_game_stats`: Links each player's game performance to their identity and demographics.
-- Any other fact tables related to player performance (e.g., `fact_goalie_game_stats`) will also use this dimension via `player_id`.
 
 This allows aggregation and filtering of player statistics by position, geography, age, handedness, etc.
 
@@ -185,16 +160,6 @@ This allows aggregation and filtering of player statistics by position, geograph
 
 - **`country_state`**:  
   Uses `state_mapping` table to enrich the state/province code into a human-readable name, primarily for North American players.
-
-#### Other Attributes
-- **`birth_city`, `birth_date`**:  
-  Useful for age calculations and demographic segmentation.
-
-- **`height_feet`, `height_inches`, `weight_pounds`**:  
-  Physical attributes that can be used for scouting profiles, clustering, or performance modeling.
-
-- **`handedness`**:  
-  Taken from `shoots_or_catches_side`, it represents the side the player uses for shooting (skaters) or catching (goalies). Critical for analyzing in-game dynamics and matchup strategies.
 
 ---
 
@@ -221,7 +186,8 @@ The `dim_team` dimension table provides enriched and standardized information ab
   - `dim_game.home_team_id` and `dim_game.away_team_id`: identifies which teams played in each game.
 
 #### Transformation Logic
-- `team_name`: Concatenates `team_location` and `team_nickname` to produce a human-readable full team name (e.g., "Toronto Maple Leafs").
-- Other fields like `team_id`, `franchise_id`, and `team_abbreviation` are selected as-is from the cleaned source for consistency and reference integrity.
+- `team_name`: team_name is taken from team_logos seed table to produce a Properly formatted name clear of any misspellings. 
+
+- `team_pic_url`: the mapped team logo url from team_logos seed table are selected to be used for dashboarding purposes.
 
 {% enddocs %}

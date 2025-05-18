@@ -16,3 +16,14 @@ seeds:
         description: "Abbreviation for the state or province (e.g., 'NY', 'ON')."
       - name: state
         description: "Full name of the state or province (e.g., 'New York', 'Ontario')."
+
+  - name: team_logos
+    description: "Seed table that maps team name to its team logo."
+    columns:
+      - name: id
+        description: "Matching team_id to team_info table"
+      - name: team_name
+        description: "Formated Team Name to map to team_info to fix spelling or casing mistakes"
+      - name: team_pic_url
+        description: "png files of different NHL teams"
+

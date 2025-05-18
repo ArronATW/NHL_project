@@ -94,25 +94,14 @@ This model processes the `src_player_info` source table by applying the followin
 2. **ID and Type Casting**:
    - `player_id` is cast to an integer.
 
-3. **Name Normalization**:
-   - **`first_name`**:
-     - If it contains only alphabetic characters (`^[[:alpha:]]+$`), it is kept as-is.
-     - If it's 4 characters or fewer and contains non-alphabetic characters (e.g., hyphen), it replaces hyphens with periods.
-   - **`last_name`**:
-     - Trimmed and extra spaces reduced to a single space.
-     - If it contains multiple words (e.g., middle names or compound names), it is title-cased.
-
-4. **Nationality**:
+3. **Nationality**:
    - Values equal to `'NA'` are converted to `NULL`.
    - Other values are cast to a 3-character format.
 
-5. **Birthplace Fields**:
-   - **`birth_city`**:
-     - Trimmed, extra spaces normalized, and title-cased.
-   - **`birth_state_province`**:
-     - Converted to `NULL` if equal to `'NA'`.
+4. **Birth_state_province**:
+   - Converted to `NULL` if equal to `'NA'`.
 
-6. **Physical Attributes**:
+5. **Physical Attributes**:
    - **Height**:
      - `height_feet` and `height_inches` are parsed separately from their respective columns.
      - `'NA'` values are converted to `NULL`.
@@ -120,10 +109,10 @@ This model processes the `src_player_info` source table by applying the followin
      - If `weight_pounds` is `'NA'`, it is set to `NULL`.
      - Otherwise, it is cast to `INT` and also converted to kilograms (rounded to 1 decimal place).
 
-7. **Player Orientation**:
+6. **Player Orientation**:
    - `shoots_or_catches_side` is set to `NULL` if it is `'NA'`.
 
-8. **Final Column Selection**:
+7. **Final Column Selection**:
    - The cleaned and formatted fields are selected for downstream use, ensuring consistency and eliminating placeholder or malformed values.
 
 
@@ -150,13 +139,6 @@ This model performs light transformation and cleaning of team information from t
 - **Type Casting**  
   - `team_id` and `franchise_id` are cast to integers to standardize data types for consistency and compatibility with downstream models.
 
-- **Column Selection**  
-  - Only the following relevant columns are selected:
-    - `team_location`: Name of the team's city or region
-    - `team_nickname`: Team's nickname
-    - `team_abbreviation`: Official team abbreviation
-    - `team_api_link`: Reference to the team's endpoint in the NHL API
-
 - **Ordering**  
   - Output is sorted by `team_id` to ensure consistent row ordering.
 
@@ -166,6 +148,6 @@ This model performs light transformation and cleaning of team information from t
   - Not needed, as all `team_id` values are unique in the source.
 
 - **Null/Invalid Value Handling**  
-  - Not performed, since the selected fields are assumed to be clean and well-formed.
+  - Not performed, since the selected fields are checked to be clean and well-formed.
 
 {% enddocs %}

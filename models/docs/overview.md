@@ -28,6 +28,7 @@ This project uses the following raw datasets (via seeds or Snowflake external st
 - External mappings:
   - `country_mapping` – Mapping country codes to full names.
   - `state_mapping` – Mapping US state abbreviations to full names.
+  - `team_logos` - Mapping Team name and Team logo URL to team_id
 
 ---
 
@@ -53,7 +54,7 @@ These models include business logic and calculated metrics.
 Higher-level aggregated models for quick insights:
 
 - `agg_player_season_stats` – Player stats by season.
-- `agg_player_career_stats` – Player cumulative career stats.
+- `leaderboard_season_level_stats` – Filtered down version of `agg_player_season_stats` such that normalisation can be performed
 
 ---
 

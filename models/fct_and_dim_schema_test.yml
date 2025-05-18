@@ -77,6 +77,13 @@ models:
       - name: giveaways
         description: "Puck losses to opponents"
 
+      - name: plus_minus_rating
+        description: "+/- rating measures a player's impact on their team's goal differential 
+        during even-strength and shorthanded situations. A player receives a +1 for 
+        each even-strength or shorthanded goal their team scores while they're on the 
+        ice and a -1 for each such goal the opposing team scores while they're on the ice. 
+        The difference between these two values is the player's plus-minus rating."
+
       - name: hits
         description: "Number of intentionally initiated contact with the player
          possessing the puck that causes that player to lose possession 
@@ -126,7 +133,7 @@ models:
     description: '{{ doc("dim_game") }}'
     columns:
       - name: game_id
-        description: ""
+        description: "Unique identifier for each NHL game"
         tests:
           - unique
           - not_null
@@ -249,6 +256,9 @@ models:
       - name: team_name
         description: "Concatenated full name of the team in 'Location Nickname' 
         format."
+
+      - name: team_pic_url
+        description: "url for NHL team, image will be in png format."
       
       - name: team_abbreviation
         description: "Official 3-letter NHL abbreviation for the team (e.g., 'NYR', 'COL')"
