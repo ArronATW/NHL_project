@@ -17,13 +17,13 @@ st.set_page_config(
 #######################
 def start_session():
   connection_parameters = {
-    "account": "vgkqlmq-iz52053",
-    "user": "WASSABII96",
-    "password": "Kopipeng140000",
-    "role": "ACCOUNTADMIN",
-    "warehouse": "COMPUTE_WH",
-    "database": "NHL_DB",
-    "schema": "DEV_SCH_CORE",
+    "account": st.secrets["snowflake"]["account"],
+    "user": st.secrets["snowflake"]["user"],
+    "password": st.secrets["snowflake"]["password"],
+    "role": st.secrets["snowflake"]["role"],
+    "warehouse": st.secrets["snowflake"]["warehouse"],
+    "database": st.secrets["snowflake"]["database"],
+    "schema": st.secrets["snowflake"]["schema"]
   }
   session = Session.builder.configs(connection_parameters).create()
   return session
