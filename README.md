@@ -1,15 +1,49 @@
-Welcome to your new dbt project!
+# 🏒 NHL Data Engineering Pipeline & Dashboard
 
-### Using the starter project
+This project showcases a complete data engineering pipeline for NHL game data. It integrates data ingestion, transformation, and visualization using modern tools such as AWS S3, Snowflake, dbt, and Streamlit.
 
-Try running the following commands:
-- dbt run
-- dbt test
+## 🚀 Project Overview
+
+The pipeline processes raw NHL game data from Kaggle, stores it in a data lake (AWS S3), transforms it in a Snowflake data warehouse using dbt, and presents the final analytics in a cloud-deployed Streamlit dashboard.
+
+---
+
+## 📊 NHL Players Dashboard
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://nhlproject-bb5zrbxkdsohil5tabdbqf.streamlit.app/)
+
+The dashboard allows users to:
+- Explore player statistics by season, team, and position
+- View leaderboards for offensive and defensive performance
+- Top Offensive and Defensive players during Power Plays or Penalty Kills
+- How points varies by positions
+---
+
+## 🗂️ Data Source
+
+The data used in this project is sourced from Kaggle:
+
+[NHL Game Data on Kaggle](https://www.kaggle.com/datasets/martinellis/nhl-game-data/data) which includes detailed player stats, game outcomes, and team performance from 2000 to 2020.
+
+[NHL Player API](https://api-web.nhle.com/v1/player/{player_id}/landing) was also used to get pictures for dashboard
+
+---
 
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+## Architecture
+
+1. **Data Collection**: CSVs from [Kaggle](https://www.kaggle.com/datasets/martinellis/nhl-game-data/data)
+2. **Data Lake**: Raw files stored in an AWS S3 bucket
+3. **Data Warehouse**:
+   - Loaded into Snowflake staging schema
+   - Transformed using dbt (cleaning, transforming, testing)
+4. **Transformation Logic**:
+   - Cleaning and normalization
+   - Deriving new metrics (e.g., points per 60 minutes)
+   - Joins between player and game stats
+
+📄 **Detailed transformation logic is documented in dbt**:  
+🔗 [View dbt Documentation](https://dbt-documentation-nhl-project.s3.ap-southeast-2.amazonaws.com/index.html#!/model/model.nhl_project.leaderboard_season_level_stats)
+
+5. **Data Presentation**:
+   - Streamlit app pulls from transformed Snowflake tables
+   - Deployed online for interactive user access
