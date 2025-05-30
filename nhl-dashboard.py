@@ -598,7 +598,7 @@ def top_pk_bar_chart(season_start, season_end, positions, teams):
     color='black'
   ).encode(
       y=alt.Y('FULL_NAME:N', sort=top_players['FULL_NAME'].tolist()),
-      x='TOTAL_PK_POINTS_PER_60MINUTE:Q',
+      x='TOTAL_SH_POINTS_PER_60MINUTE:Q',
       text='SEASON_LABEL:N'
   )
 
