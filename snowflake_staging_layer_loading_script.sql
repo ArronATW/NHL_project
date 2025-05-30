@@ -140,6 +140,7 @@ COPY INTO NHL_DB.STAGE_SCH.team_info
     file_format= csv_fileformat
     FILES = ('team_info.csv');
 
+<<<<<<< HEAD
 CREATE OR REPLACE FILE FORMAT JSON_FORMAT
   TYPE = 'JSON';
 
@@ -158,4 +159,6 @@ FROM (
   FROM @NHL_DB.STAGE_SCH.NHL_PLAYER_API_STAGE
     (FILE_FORMAT => 'JSON_FORMAT')
 );
+=======
+>>>>>>> 2fdf98ababcdb16b6eb32361d4adebe95c685e78
 
