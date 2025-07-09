@@ -20,6 +20,11 @@ The data used in this project is sourced from Kaggle:
 ## 📊 NHL Players Dashboard
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://nhlproject-bb5zrbxkdsohil5tabdbqf.streamlit.app/)
 
+⚠️ **Note**: The Streamlit app is currently unavailable as the Snowflake trial period has ended. Please refer to the gif below to see how the dashboards looks like.
+
+
+![Streamlit Dashboard](https://github.com/ArronATW/NHL_project/blob/main/streamlitrecording-ezgif.com-video-to-gif-converter.gif)
+
 The dashboard allows users to:
 - Explore player statistics by season, team, and position
 - View leaderboards for offensive and defensive performance
@@ -29,7 +34,8 @@ The dashboard allows users to:
 
 
 ## Architecture
-![architecture diagram](https://github.com/ArronATW/NHL_project/blob/main/NHL_architecture.png)
+![architecture](https://github.com/ArronATW/NHL_project/blob/main/REC-20250709183615.gif)
+![data lineage](https://github.com/ArronATW/NHL_project/blob/main/NHL_architecture.png)
 
 1. **Data Collection**: CSVs from [Kaggle](https://www.kaggle.com/datasets/martinellis/nhl-game-data/data)
 2. **Data Lake**: Raw files stored in an AWS S3 bucket
